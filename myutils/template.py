@@ -4,7 +4,7 @@ import unittest
 
 
 class AOC(abc.ABC, unittest.TestCase):
-    PATH = "C:\\Users\\Mateusz\\PycharmProjects\\Advent Of Code\\inputs\\"
+    PATH = "C:\\Users\\Mateusz\\PycharmProjects\\Advent Of Code 2024\\inputs\\"
     EXPECTED1 : ...
     EXPECTED2 : ... = None
 
