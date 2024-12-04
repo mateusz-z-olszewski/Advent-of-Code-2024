@@ -1,7 +1,8 @@
 from itertools import groupby
 from types import NoneType
-from typing import Callable, Iterable, TypeVar
+from typing import Callable, Iterable, TypeVar, Iterator
 from _operator import sub
+from collections import deque
 
 
 T = TypeVar('T')
@@ -50,7 +51,7 @@ def groupby_to_dict(iterable):
     return {k : tuple(v) for k, v in groupby(iterable)}
 
 
-def count(iterable: Iterable[bool]) -> int:
+def count_bool(iterable: Iterable[bool]) -> int:
     return sum(map(int, iterable))
 
 
@@ -60,3 +61,7 @@ def diff(l : list[int], diff_function=sub, gap=1):
 
 def safe_line_split(input: str) -> list[str]:
     return input.strip().split("\n")
+
+
+def consume(iterable: Iterator) -> None:
+    deque(iterable, maxlen=0)

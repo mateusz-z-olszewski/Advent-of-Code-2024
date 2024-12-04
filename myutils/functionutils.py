@@ -38,3 +38,6 @@ def chained(source: Iterable, f1: Callable, *fs: Callable) -> ...:
     for f in fs:
         out = f(out)
     return out
+
+def partial(function: Callable, *bound: Any) -> Any:
+    return lambda *args: function(*bound + args)

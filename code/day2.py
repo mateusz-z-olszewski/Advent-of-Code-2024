@@ -10,7 +10,7 @@ class Day2(AOC):
             safe_line_split,
             map(split_row_ints),
             map(row_valid),
-            count
+            count_bool
         )
 
     def part2(self, input : str) -> ...:
@@ -18,7 +18,7 @@ class Day2(AOC):
             safe_line_split,
             map(split_row_ints),
             map(row_valid2),
-            count
+            count_bool
         )
 
 
