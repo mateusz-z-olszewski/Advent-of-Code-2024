@@ -1,4 +1,3 @@
-import itertools
 import functools
 import builtins
 
@@ -39,5 +38,13 @@ def chained(source: Iterable, f1: Callable, *fs: Callable) -> ...:
         out = f(out)
     return out
 
+
+
+
 def partial(function: Callable, *bound: Any) -> Any:
     return lambda *args: function(*bound + args)
+
+
+def debug_chained(item):
+    print(item)
+    return item

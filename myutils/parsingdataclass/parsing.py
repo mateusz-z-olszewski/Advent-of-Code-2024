@@ -31,8 +31,8 @@ def parsing(pattern: str):
     def __decorator(cls):
         dataclass(cls)
 
-        def init_generator(previousinit: Callable[[Any, str], None]):
-            def newInit(self, input: str):
+        def init_generator(previous_init: Callable[[Any, str], None]):
+            def new_init(self, input: str):
                 m: regex.Match[str] | None = regex.fullmatch(pattern, input)
                 annotations: dict = cls.__annotations__
                 if m is None:
@@ -42,21 +42,21 @@ def parsing(pattern: str):
                     raise ParsingException(
                         f"The regex has {_re_group_count} groups but the class has only {len(annotations.values())} fields."
                     )
-                fullitr = iter(m.allcaptures())
+                full_itr = iter(m.allcaptures())
                 "Iterator over groups of a match"
-                next(fullitr)  # skip the first match - which matches the whole string
+                next(full_itr)  # skip the first match - which matches the whole string
                 args = []
                 # iterate over all annotations in a class and over all 
                 for attrname, typename in annotations.items():
-                    value: list[str] = next(fullitr)  # value - list of matches for that group
+                    value: list[str] = next(full_itr)  # value - list of matches for that group
                     _type: type = get_type_hints(cls)[attrname]
                     if isinstance(_type, GenericAliasClass):
                         # this group was declared to be quantifiable 
-                        typelist: tuple[type] = get_args(_type)
-                        if len(typelist) != 1:
+                        type_list: tuple[type, ...] = get_args(_type)
+                        if len(type_list) != 1:
                             raise ParsingException(f"Annotation {typename} does not have exactly one parameter")
-                        innertype = typelist[0]
-                        args.append([innertype(x) for x in value])
+                        inner_type = type_list[0]
+                        args.append([inner_type(x) for x in value])
                     elif isinstance(_type, UnionTypeClass):
                         # this group was declared to be nullable 
                         # digression: how would one replace Java/SQL lingo? (None-able??)
@@ -66,11 +66,11 @@ def parsing(pattern: str):
                         uniontypes = get_args(_type)
                         if len(uniontypes) != 2 or NoneTypeClass not in uniontypes:
                             raise ParsingException("Only union types of a type and None are supported")
-                        realtype = uniontypes[int(uniontypes[0] == None)]  # the non-None type
+                        real_type = uniontypes[int(uniontypes[0] is None)]  # the non-None type
                         if len(value) == 0:
                             args.append(None)
                         else:
-                            args.append(realtype(value[0]))
+                            args.append(real_type(value[0]))
                     else:
                         # this group was declared to be not quantifiable and not nullable
                         if (len(value)) != 1:
@@ -78,9 +78,9 @@ def parsing(pattern: str):
                                 "Annotation that is not quantifiable nor nullable should exactly one item.")
                         args.append(_type(value[0]))
 
-                previousinit(self, *args)
+                previous_init(self, *args)
 
-            return newInit
+            return new_init
 
         cls.__init__ = init_generator(cls.__init__)
         return cls
@@ -96,6 +96,6 @@ def parsing(pattern: str):
 # many  |  +  |  +  |  +  | <-- list[T]
 # ------|-----|-----|-----|     ^^^^^^^  where T is a type that has a
 # ^                             constructor taking exactly one string   
-# |       + ok, ! not ok         
+# |
 # |
 # with which quantity was this field annotated

@@ -9,6 +9,7 @@ class AOC(abc.ABC, unittest.TestCase):
     PATH = "C:\\Users\\Mateusz\\PycharmProjects\\Advent Of Code 2024\\inputs\\"
     EXPECTED1 : ...
     EXPECTED2 : ... = None
+    DO_BENCHMARK = False
 
     def __init__(self, method_name: str = "runTest"):
         super().__init__(method_name)
@@ -55,7 +56,7 @@ class AOC(abc.ABC, unittest.TestCase):
 
         self.assertEqual(self.EXPECTED1, self.part1(self.EXAMPLE))
         full1 = self.part1(self.FULL)
-        print(f"====\nResult for part 1: {full1}\n\n")
+        print(f"====\nResult for part 1: {full1}")
         if self.ANSWER1 is not None:
             self.assertEqual(self.ANSWER1, str(full1))
 
@@ -72,6 +73,7 @@ class AOC(abc.ABC, unittest.TestCase):
         if self.ANSWER2 is not None:
             self.assertEqual(self.ANSWER2, str(full2))
 
+        if not self.DO_BENCHMARK: return
         if self.BENCHMARK is not None:
             self.benchmark(self.BENCHMARK)
         else:
