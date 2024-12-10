@@ -1,7 +1,3 @@
-from ast import parse
-
-import numpy as np
-
 from myutils import *
 
 

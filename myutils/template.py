@@ -53,7 +53,6 @@ class AOC(abc.ABC, unittest.TestCase):
         self.part1(input)
 
     def test(self):
-
         self.assertEqual(self.EXPECTED1, self.part1(self.EXAMPLE))
         full1 = self.part1(self.FULL)
         print(f"====\nResult for part 1: {full1}")
