@@ -126,6 +126,3 @@ def cartesian_power(input : Collection, n: int, start: list = None):
     else:
         raise Exception(f"{n} is not a valid power!")
     return
-
-#if __name__ == '__main__':
-    #consume(map(print, cartesian_power(('*', '+', '||'), 5)))

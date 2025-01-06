@@ -1,6 +1,5 @@
 import abc
 import os.path
-from abc import abstractmethod
 import unittest
 import time
 
@@ -44,8 +43,7 @@ class AOC(abc.ABC, unittest.TestCase):
             self.BENCHMARK = None
 
 
-
-    @abstractmethod
+    #@abstractmethod
     def part1(self, input : str) -> ...:
         pass
 
@@ -64,7 +62,7 @@ class AOC(abc.ABC, unittest.TestCase):
         if self.EXPECTED2 is None:
             print("Did not find expected value for part 2.")
             print(f"Result is {self.part2(self.EXAMPLE2)} anyway.")
-        else :
+        else:
             self.assertEqual(self.EXPECTED2, self.part2(self.EXAMPLE2))
 
         full2 = self.part2(self.FULL)
